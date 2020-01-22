@@ -35,6 +35,7 @@ if ( ! function_exists( 'dp_alt_products' ) ) {
 	 *
 	 * @since 1.0.0
 	 */
+	 /* Patch for returning products from SKUs */
 	function dp_alt_products() {
 
 		global $post;
@@ -42,11 +43,12 @@ if ( ! function_exists( 'dp_alt_products' ) ) {
 		$alt_products = is_array( $alt_products ) ? $alt_products : array();
 		$notice       = dp_alt_products_notice( $post->ID, empty( $alt_products ) );
 		?>
-		<h4 class="discontinued-notice"><?php echo esc_html( $notice ); ?></h4>
+		<div class="wss-discontinued"><h4 class="discontinued-notice"><?php echo esc_html( $notice ); ?></h4>
 		<?php
-		foreach ( $alt_products as $alt_product ) {
+		foreach ( $alt_products as $alt_product_sku ) {
+      $alt_product = wc_get_product_id_by_sku($alt_product_sku);
 			?>
-			<a href="<?php echo esc_url( get_permalink( $alt_product ) ); ?>" class="button"><?php echo get_the_title( $alt_product ); ?></a>
+			<a href="<?php echo esc_url( get_permalink( $alt_product ) ); ?>" class="discontinued-button"><?php echo get_the_title( $alt_product ); ?></a></div>
 			<?php
 		}
 	}
