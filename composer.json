@@ -2,7 +2,7 @@
   "name": "wholesale-solar/woocommerce-discontinued-products",
   "description": "wholesale-solar/woocommerce-discontinued-products",
   "homepage": "",
-  "version": "1.7.2-patched",
+  "version": "1.1.5-patched",
   "type": "wordpress-plugin",
   "require": {
     "php": ">=7.0",
