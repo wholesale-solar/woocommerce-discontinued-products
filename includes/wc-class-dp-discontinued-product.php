@@ -124,15 +124,16 @@ if ( ! class_exists( 'WC_Class_DP_Discontinued_Product' ) ) {
 				</div>
 
 				<div class="options_group">
-
+					<!-- Patch for returning product IDs from product SKUs -->
 					<p class="form-field">
 						<label for="alt_products"><?php esc_html_e( 'Alternative Products', 'woocommerce-discontinued-products' ); ?></label>
-						<select name="alt_products[]" class="wc-product-search" multiple="multiple" style="width: 50%;" data-placeholder="<?php esc_attr_e( 'Search for a product&hellip;', 'woocommerce' ); ?>" data-action="woocommerce_json_search_products_and_variations">
+						<select name="alt_products[]" class="wc-product-search" multiple="multiple" style="width: 50%;" data-action="woocommerce_json_search_products_and_variations">
 							<?php
-							$product_ids = array_filter( array_map( 'absint', (array) get_post_meta( $post->ID, '_alt_products', true ) ) );
+							$product_skus = array_filter( array_map( 'absint', (array) get_post_meta( $post->ID, '_alt_products', true ) ) );
 
-							foreach ( $product_ids as $product_id ) {
-								$product = wc_get_product( $product_id );
+							foreach ( $product_skus as $product_sku ) {
+                						$prod_id = wc_get_product_id_by_sku($product_sku);
+								$product = wc_get_product( $prod_id );
 								if ( is_object( $product ) ) {
 									echo '<option value="' . esc_attr( $product_id ) . '"' . selected( true, true, false ) . '>' . wp_kses_post( $product->get_formatted_name() ) . '</option>';
 								}
