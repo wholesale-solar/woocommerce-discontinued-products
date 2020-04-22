@@ -238,19 +238,30 @@ if ( ! class_exists( 'WC_Class_DP_Discontinued_Product' ) ) {
 		 *
 		 * @since 1.0.0
 		 */
+		/**
+		* Limit queries to one.  04/21/2020 Josh0.
+		*
+		*/
 		public function set_discontinued_products_to_hide() {
-
-			$hide_from_shop   = get_option( 'dc_hide_from_shop' );
-			$hide_from_search = get_option( 'dc_hide_from_search' );
-			$ids_hide_shop    = $this->get_product_ids_to_hide( '_hide_from_shop', $hide_from_shop );
-			$ids_hide_search  = $this->get_product_ids_to_hide( '_hide_from_search', $hide_from_search );
-			if ( $ids_hide_shop !== $this->hide_from_shop ) {
-				set_transient( 'dp_hide_from_shop', $ids_hide_shop );
-				$this->hide_from_shop = $ids_hide_shop;
+			global $hide_from_shop_done;
+			global $hide_from_search_done;
+			if( !$hide_from_shop_done ) {
+				$hide_from_shop   = get_option( 'dc_hide_from_shop' );
+				$ids_hide_shop    = $this->get_product_ids_to_hide( '_hide_from_shop', $hide_from_shop );
+				if ( $ids_hide_shop !== $this->hide_from_shop ) {
+					set_transient( 'dp_hide_from_shop', $ids_hide_shop );
+					$this->hide_from_shop = $ids_hide_shop;
+				}
+				$hide_from_shop_done = true;
 			}
-			if ( $ids_hide_search !== $this->hide_from_search ) {
-				set_transient( 'dp_hide_from_search', $ids_hide_search );
-				$this->hide_from_search = $ids_hide_search;
+			if( !$hide_from_search_done ) {
+				$hide_from_search = get_option( 'dc_hide_from_search' );
+				$ids_hide_search  = $this->get_product_ids_to_hide( '_hide_from_search', $hide_from_search );
+				if ( $ids_hide_search !== $this->hide_from_search ) {
+					set_transient( 'dp_hide_from_search', $ids_hide_search );
+					$this->hide_from_search = $ids_hide_search;
+				}
+				$hide_from_search_done = true;
 			}
 		}
 
